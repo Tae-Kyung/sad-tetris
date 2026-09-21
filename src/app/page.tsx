@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTetris } from "@/hooks/useTetris";
-import { logAccess } from "@/lib/supabase";
+import { logAccess, saveGameRecord } from "@/lib/supabase";
 import TetrisBoard from "@/components/TetrisBoard";
 import PiecePreview from "@/components/PiecePreview";
 import GameInfo from "@/components/GameInfo";
@@ -15,12 +15,28 @@ import { Gamepad2 } from "lucide-react";
 
 export default function Home() {
   const game = useTetris();
+  const [playerName, setPlayerName] = useState("");
   const [showGameOver, setShowGameOver] = useState(false);
   const [activeTab, setActiveTab] = useState<"leaderboard" | "reviews">("leaderboard");
+  const [prevGameState, setPrevGameState] = useState(game.gameState);
 
   useEffect(() => {
     logAccess();
   }, []);
+
+  // Auto-save on game over
+  useEffect(() => {
+    if (prevGameState !== "gameover" && game.gameState === "gameover" && playerName.trim()) {
+      saveGameRecord({
+        player_name: playerName.trim(),
+        score: game.score,
+        level: game.level,
+        lines_cleared: game.lines,
+      }).catch(() => {});
+      setShowGameOver(false);
+    }
+    setPrevGameState(game.gameState);
+  }, [game.gameState]);
 
   const isGameOver = game.gameState === "gameover";
   const showGameOverModal = isGameOver && !showGameOver;
@@ -69,9 +85,18 @@ export default function Home() {
                     <p>ESC / P - Pause</p>
                   </div>
                 </div>
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  maxLength={20}
+                  className="w-40 sm:w-48 bg-gray-900 border border-neon-cyan/30 rounded px-3 py-2 text-[10px] sm:text-xs text-center focus:outline-none focus:border-neon-cyan"
+                />
                 <button
                   onClick={game.startGame}
-                  className="bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-lg px-10 py-4 text-sm sm:text-base hover:bg-neon-cyan/30 transition neon-text"
+                  disabled={!playerName.trim()}
+                  className="bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-lg px-10 py-4 text-sm sm:text-base hover:bg-neon-cyan/30 disabled:opacity-30 disabled:cursor-not-allowed transition neon-text"
                 >
                   START GAME
                 </button>
@@ -137,6 +162,7 @@ export default function Home() {
       {/* Modals */}
       {showGameOverModal && (
         <GameOverModal
+          playerName={playerName}
           score={game.score}
           level={game.level}
           lines={game.lines}
