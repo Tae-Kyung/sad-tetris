@@ -12,10 +12,13 @@ import PauseModal from "@/components/PauseModal";
 import Leaderboard from "@/components/Leaderboard";
 import Reviews from "@/components/Reviews";
 import AccessLogs from "@/components/AccessLogs";
+import { useCellSize } from "@/hooks/useCellSize";
+import { BOARD_WIDTH, BOARD_HEIGHT } from "@/lib/tetris";
 import { Gamepad2 } from "lucide-react";
 
 export default function Home() {
   const game = useTetris();
+  const cellSize = useCellSize();
   const [playerName, setPlayerName] = useState("");
   const [showGameOver, setShowGameOver] = useState(false);
   const [activeTab, setActiveTab] = useState<"leaderboard" | "reviews" | "logs">("leaderboard");
@@ -71,8 +74,8 @@ export default function Home() {
               <div
                 className="neon-border rounded-lg bg-gray-950/80 flex flex-col items-center justify-center gap-8"
                 style={{
-                  width: "clamp(180px, 37vw, 300px)",
-                  height: "clamp(360px, 74vw, 600px)",
+                  width: `${cellSize * BOARD_WIDTH + BOARD_WIDTH + 10}px`,
+                  height: `${cellSize * BOARD_HEIGHT + BOARD_HEIGHT + 10}px`,
                 }}
               >
                 <Gamepad2 size={64} className="text-neon-cyan animate-pulse-neon" />
@@ -106,6 +109,7 @@ export default function Home() {
               <TetrisBoard
                 board={game.board}
                 currentPiece={game.currentPiece}
+                cellSize={cellSize}
               />
             )}
 

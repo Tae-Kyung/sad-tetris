@@ -5,9 +5,10 @@ import { Board, Piece, BOARD_WIDTH, BOARD_HEIGHT } from "@/lib/tetris";
 interface Props {
   board: Board;
   currentPiece: Piece | null;
+  cellSize: number;
 }
 
-export default function TetrisBoard({ board, currentPiece }: Props) {
+export default function TetrisBoard({ board, currentPiece, cellSize }: Props) {
   const getCellColor = (row: number, col: number): string | null => {
     if (board[row][col]) return board[row][col];
 
@@ -44,7 +45,8 @@ export default function TetrisBoard({ board, currentPiece }: Props) {
                 key={`${row}-${col}`}
                 className="aspect-square rounded-sm"
                 style={{
-                  width: "clamp(16px, 3.5vw, 28px)",
+                  width: `${cellSize}px`,
+                  height: `${cellSize}px`,
                   backgroundColor: color || "#111127",
                   border: color
                     ? "1px solid rgba(255,255,255,0.15)"
