@@ -282,15 +282,15 @@ export function useTetris() {
           break;
         case "ArrowUp":
           e.preventDefault();
-          rotate(1);
+          rotate(-1);
           break;
         case "z":
         case "Z":
-          rotate(-1);
+          rotate(1);
           break;
         case "x":
         case "X":
-          rotate(1);
+          rotate(-1);
           break;
         case " ":
           e.preventDefault();

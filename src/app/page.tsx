@@ -84,8 +84,8 @@ export default function Home() {
                 onMoveLeft={game.moveLeft}
                 onMoveRight={game.moveRight}
                 onMoveDown={game.moveDown}
-                onRotateCW={() => game.rotate(1)}
-                onRotateCCW={() => game.rotate(-1)}
+                onRotateCW={() => game.rotate(-1)}
+                onRotateCCW={() => game.rotate(1)}
                 onHardDrop={game.hardDrop}
                 onHold={game.hold}
                 onPause={game.togglePause}
