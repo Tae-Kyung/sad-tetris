@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #0a0a1a;
+  color: #e0e0ff;
+  font-family: "Press Start 2P", monospace;
+}
+
+.neon-border {
+  border: 2px solid #00fff5;
+  box-shadow: 0 0 8px #00fff5aa, inset 0 0 8px #00fff520;
+}
+
+.neon-text {
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor;
+}
+
+.cell-glow {
+  box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.3);
+}
