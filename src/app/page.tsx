@@ -75,7 +75,6 @@ export default function Home() {
               <TetrisBoard
                 board={game.board}
                 currentPiece={game.currentPiece}
-                ghostPosition={game.ghostPosition}
               />
             )}
 
