@@ -11,13 +11,14 @@ import GameOverModal from "@/components/GameOverModal";
 import PauseModal from "@/components/PauseModal";
 import Leaderboard from "@/components/Leaderboard";
 import Reviews from "@/components/Reviews";
+import AccessLogs from "@/components/AccessLogs";
 import { Gamepad2 } from "lucide-react";
 
 export default function Home() {
   const game = useTetris();
   const [playerName, setPlayerName] = useState("");
   const [showGameOver, setShowGameOver] = useState(false);
-  const [activeTab, setActiveTab] = useState<"leaderboard" | "reviews">("leaderboard");
+  const [activeTab, setActiveTab] = useState<"leaderboard" | "reviews" | "logs">("leaderboard");
   const [prevGameState, setPrevGameState] = useState(game.gameState);
 
   useEffect(() => {
@@ -154,8 +155,18 @@ export default function Home() {
             >
               REVIEWS
             </button>
+            <button
+              onClick={() => setActiveTab("logs")}
+              className={`flex-1 text-[9px] py-1.5 rounded-t border transition ${
+                activeTab === "logs"
+                  ? "border-neon-cyan text-neon-cyan bg-gray-950"
+                  : "border-gray-700 text-gray-500 bg-gray-900"
+              }`}
+            >
+              LOGS
+            </button>
           </div>
-          {activeTab === "leaderboard" ? <Leaderboard /> : <Reviews />}
+          {activeTab === "leaderboard" ? <Leaderboard /> : activeTab === "reviews" ? <Reviews /> : <AccessLogs />}
         </div>
       </div>
 

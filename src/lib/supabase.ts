@@ -78,6 +78,28 @@ export async function logAccess() {
   } catch {}
 }
 
+export interface AccessLog {
+  id?: string;
+  ip_address: string;
+  user_agent: string;
+  language: string;
+  screen_width: number;
+  screen_height: number;
+  referrer: string;
+  created_at?: string;
+}
+
+export async function getAccessLogs(limit = 50): Promise<AccessLog[]> {
+  if (!supabase) return [];
+  const { data, error } = await supabase
+    .from("tetris_access_logs")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data || [];
+}
+
 export async function getAverageRating(): Promise<number> {
   if (!supabase) return 0;
   const { data, error } = await supabase.from("tetris_reviews").select("rating");
