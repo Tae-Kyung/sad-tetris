@@ -27,73 +27,76 @@ export default function Home() {
         TETRIS
       </h1>
 
-      <div className="flex flex-col lg:flex-row gap-4 items-start justify-center w-full max-w-5xl">
-        {/* Left sidebar - Hold & Game Info */}
-        <div className="hidden md:flex flex-col gap-3 w-32">
-          <PiecePreview type={game.holdPiece} label="HOLD" />
-          <GameInfo score={game.score} level={game.level} lines={game.lines} />
-        </div>
-
-        {/* Center - Game Board */}
-        <div className="flex flex-col items-center">
-          {/* Mobile: Hold & Next inline */}
-          <div className="flex md:hidden gap-2 mb-2 w-full justify-between px-2">
+      <div className="flex flex-col md:flex-row gap-4 items-start justify-center w-full max-w-5xl">
+        {/* Left: Game area with sidebars */}
+        <div className="flex gap-3 justify-center">
+          {/* Left sidebar - Hold & Game Info */}
+          <div className="hidden md:flex flex-col gap-3 w-28 shrink-0">
             <PiecePreview type={game.holdPiece} label="HOLD" />
             <GameInfo score={game.score} level={game.level} lines={game.lines} />
-            <PiecePreview type={game.nextPieces[0] || null} label="NEXT" />
           </div>
 
-          {game.gameState === "idle" ? (
-            <div className="neon-border rounded-lg p-8 bg-gray-950/80 flex flex-col items-center gap-6">
-              <Gamepad2 size={48} className="text-neon-cyan animate-pulse-neon" />
-              <div className="text-center space-y-2">
-                <p className="text-xs text-gray-400">Controls:</p>
-                <div className="text-[8px] text-gray-500 space-y-1">
-                  <p>Arrow Keys - Move & Rotate</p>
-                  <p>Space - Hard Drop</p>
-                  <p>C/Shift - Hold</p>
-                  <p>ESC/P - Pause</p>
-                </div>
-              </div>
-              <button
-                onClick={game.startGame}
-                className="bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-lg px-8 py-3 text-sm hover:bg-neon-cyan/30 transition neon-text"
-              >
-                START GAME
-              </button>
+          {/* Center - Game Board */}
+          <div className="flex flex-col items-center">
+            {/* Mobile: Hold & Next & Info inline */}
+            <div className="flex md:hidden gap-2 mb-2 w-full justify-between px-2">
+              <PiecePreview type={game.holdPiece} label="HOLD" />
+              <GameInfo score={game.score} level={game.level} lines={game.lines} />
+              <PiecePreview type={game.nextPieces[0] || null} label="NEXT" />
             </div>
-          ) : (
-            <TetrisBoard
-              board={game.board}
-              currentPiece={game.currentPiece}
-              ghostPosition={game.ghostPosition}
-            />
-          )}
 
-          {/* Mobile controls */}
-          {game.gameState === "playing" && (
-            <MobileControls
-              onMoveLeft={game.moveLeft}
-              onMoveRight={game.moveRight}
-              onMoveDown={game.moveDown}
-              onRotateCW={() => game.rotate(1)}
-              onRotateCCW={() => game.rotate(-1)}
-              onHardDrop={game.hardDrop}
-              onHold={game.hold}
-              onPause={game.togglePause}
-            />
-          )}
+            {game.gameState === "idle" ? (
+              <div className="neon-border rounded-lg p-8 bg-gray-950/80 flex flex-col items-center gap-6">
+                <Gamepad2 size={48} className="text-neon-cyan animate-pulse-neon" />
+                <div className="text-center space-y-2">
+                  <p className="text-xs text-gray-400">Controls:</p>
+                  <div className="text-[8px] text-gray-500 space-y-1">
+                    <p>Arrow Keys - Move & Rotate</p>
+                    <p>Space - Hard Drop</p>
+                    <p>C/Shift - Hold</p>
+                    <p>ESC/P - Pause</p>
+                  </div>
+                </div>
+                <button
+                  onClick={game.startGame}
+                  className="bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-lg px-8 py-3 text-sm hover:bg-neon-cyan/30 transition neon-text"
+                >
+                  START GAME
+                </button>
+              </div>
+            ) : (
+              <TetrisBoard
+                board={game.board}
+                currentPiece={game.currentPiece}
+                ghostPosition={game.ghostPosition}
+              />
+            )}
+
+            {/* Mobile controls */}
+            {game.gameState === "playing" && (
+              <MobileControls
+                onMoveLeft={game.moveLeft}
+                onMoveRight={game.moveRight}
+                onMoveDown={game.moveDown}
+                onRotateCW={() => game.rotate(1)}
+                onRotateCCW={() => game.rotate(-1)}
+                onHardDrop={game.hardDrop}
+                onHold={game.hold}
+                onPause={game.togglePause}
+              />
+            )}
+          </div>
+
+          {/* Right sidebar - Next pieces */}
+          <div className="hidden md:flex flex-col gap-3 w-28 shrink-0">
+            {game.nextPieces.slice(0, 3).map((type, i) => (
+              <PiecePreview key={i} type={type} label={i === 0 ? "NEXT" : ""} />
+            ))}
+          </div>
         </div>
 
-        {/* Right sidebar - Next pieces */}
-        <div className="hidden md:flex flex-col gap-3 w-32">
-          {game.nextPieces.slice(0, 3).map((type, i) => (
-            <PiecePreview key={i} type={type} label={i === 0 ? "NEXT" : ""} />
-          ))}
-        </div>
-
-        {/* Far right - Leaderboard & Reviews */}
-        <div className="w-full lg:w-64 space-y-3">
+        {/* Right: Leaderboard & Reviews - always visible */}
+        <div className="w-full md:w-64 shrink-0 space-y-3">
           <div className="flex gap-1">
             <button
               onClick={() => setActiveTab("leaderboard")}

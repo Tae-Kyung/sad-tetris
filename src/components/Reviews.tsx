@@ -73,7 +73,17 @@ export default function Reviews() {
     }
   };
 
-  if (!isSupabaseConfigured) return null;
+  if (!isSupabaseConfigured) {
+    return (
+      <div className="neon-border rounded-lg p-4 bg-gray-950/80">
+        <div className="text-[10px] text-neon-yellow text-center">
+          Supabase not configured.
+          <br />
+          Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="neon-border rounded-lg p-4 bg-gray-950/80">
