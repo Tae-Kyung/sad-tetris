@@ -16,6 +16,20 @@ import {
   getDropInterval,
   tryWallKick,
 } from "@/lib/tetris";
+import {
+  sfxMove,
+  sfxRotate,
+  sfxDrop,
+  sfxClear,
+  sfxTetris,
+  sfxHold,
+  sfxGameOver,
+  sfxLevelUp,
+  bgmStart,
+  bgmStop,
+  bgmPause,
+  bgmResume,
+} from "@/lib/audio";
 
 export type GameState = "idle" | "playing" | "paused" | "gameover";
 
@@ -75,6 +89,8 @@ export function useTetris() {
         const { board: clearedBoard, linesCleared } = clearLines(newBoard);
 
         if (linesCleared > 0) {
+          if (linesCleared >= 4) sfxTetris();
+          else sfxClear();
           setCombo((c) => {
             const newCombo = c + 1;
             setScore((s) => s + calculateScore(linesCleared, level, newCombo));
@@ -82,7 +98,11 @@ export function useTetris() {
           });
           setLines((l) => {
             const newLines = l + linesCleared;
-            setLevel(Math.floor(newLines / 10) + 1);
+            const newLevel = Math.floor(newLines / 10) + 1;
+            setLevel((prevLevel) => {
+              if (newLevel > prevLevel) sfxLevelUp();
+              return newLevel;
+            });
             return newLines;
           });
         } else {
@@ -93,6 +113,8 @@ export function useTetris() {
         if (!result) {
           setGameState("gameover");
           clearTimer();
+          bgmStop();
+          sfxGameOver();
           setCurrentPiece(null);
         } else {
           setCurrentPiece(result.piece);
@@ -118,6 +140,7 @@ export function useTetris() {
     setHoldPiece(null);
     setCanHold(true);
     setGameState("playing");
+    bgmStart();
 
     const result = spawnPiece(emptyBoard);
     if (result) {
@@ -130,7 +153,11 @@ export function useTetris() {
     setCurrentPiece((prev) => {
       if (!prev) return prev;
       const moved = { ...prev, position: { ...prev.position, x: prev.position.x - 1 } };
-      return isValidPosition(board, moved) ? moved : prev;
+      if (isValidPosition(board, moved)) {
+        sfxMove();
+        return moved;
+      }
+      return prev;
     });
   }, [board]);
 
@@ -138,7 +165,11 @@ export function useTetris() {
     setCurrentPiece((prev) => {
       if (!prev) return prev;
       const moved = { ...prev, position: { ...prev.position, x: prev.position.x + 1 } };
-      return isValidPosition(board, moved) ? moved : prev;
+      if (isValidPosition(board, moved)) {
+        sfxMove();
+        return moved;
+      }
+      return prev;
     });
   }, [board]);
 
@@ -156,6 +187,7 @@ export function useTetris() {
   }, [board, lockPiece]);
 
   const hardDrop = useCallback(() => {
+    sfxDrop();
     setCurrentPiece((prev) => {
       if (!prev) return prev;
       const ghost = getGhostPosition(board, prev);
@@ -172,10 +204,15 @@ export function useTetris() {
         if (!prev) return prev;
         const rotated = rotatePiece(prev, dir);
         if (isValidPosition(board, { ...rotated, position: prev.position })) {
+          sfxRotate();
           return { ...rotated, position: prev.position };
         }
         const kicked = tryWallKick(board, prev, rotated);
-        return kicked || prev;
+        if (kicked) {
+          sfxRotate();
+          return kicked;
+        }
+        return prev;
       });
     },
     [board]
@@ -183,6 +220,7 @@ export function useTetris() {
 
   const hold = useCallback(() => {
     if (!canHold || !currentPiece) return;
+    sfxHold();
     setCanHold(false);
     const currentType = currentPiece.type;
 
@@ -206,8 +244,10 @@ export function useTetris() {
     if (gameState === "playing") {
       setGameState("paused");
       clearTimer();
+      bgmPause();
     } else if (gameState === "paused") {
       setGameState("playing");
+      bgmResume();
     }
   }, [gameState, clearTimer]);
 
