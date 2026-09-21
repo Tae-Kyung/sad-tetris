@@ -29,7 +29,7 @@ export default function TetrisBoard({ board, currentPiece, cellSize }: Props) {
   };
 
   return (
-    <div className="neon-border rounded-lg p-1 bg-gray-950/80">
+    <div className="neon-border rounded-lg p-1 theme-panel">
       <div
         className="grid gap-[1px]"
         style={{
@@ -47,10 +47,10 @@ export default function TetrisBoard({ board, currentPiece, cellSize }: Props) {
                 style={{
                   width: `${cellSize}px`,
                   height: `${cellSize}px`,
-                  backgroundColor: color || "#111127",
+                  backgroundColor: color || "var(--cell-empty)",
                   border: color
-                    ? "1px solid rgba(255,255,255,0.15)"
-                    : "1px solid #1a1a3a",
+                    ? "1px solid var(--cell-filled-border)"
+                    : "1px solid var(--cell-border)",
                 }}
               />
             );

@@ -50,7 +50,7 @@ export default function AccessLogs() {
 
   if (!isSupabaseConfigured) {
     return (
-      <div className="neon-border rounded-lg p-4 bg-gray-950/80">
+      <div className="neon-border rounded-lg p-4 theme-panel">
         <div className="text-[10px] text-neon-yellow text-center">
           Supabase not configured.
         </div>
@@ -59,7 +59,7 @@ export default function AccessLogs() {
   }
 
   return (
-    <div className="neon-border rounded-lg p-4 bg-gray-950/80">
+    <div className="neon-border rounded-lg p-4 theme-panel">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Monitor size={14} className="text-neon-green" />

@@ -73,7 +73,7 @@ export default function Reviews({ playerName }: { playerName: string }) {
 
   if (!isSupabaseConfigured) {
     return (
-      <div className="neon-border rounded-lg p-4 bg-gray-950/80">
+      <div className="neon-border rounded-lg p-4 theme-panel">
         <div className="text-[10px] text-neon-yellow text-center">
           Supabase not configured.
           <br />
@@ -84,7 +84,7 @@ export default function Reviews({ playerName }: { playerName: string }) {
   }
 
   return (
-    <div className="neon-border rounded-lg p-4 bg-gray-950/80">
+    <div className="neon-border rounded-lg p-4 theme-panel">
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Star size={14} className="text-neon-yellow fill-neon-yellow" />
@@ -112,7 +112,7 @@ export default function Reviews({ playerName }: { playerName: string }) {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             maxLength={100}
-            className="flex-1 bg-gray-900 border border-gray-700 rounded px-2 py-1.5 text-[9px] focus:outline-none focus:border-neon-cyan"
+            className="flex-1 theme-input border rounded px-2 py-1.5 text-[9px] focus:outline-none focus:border-neon-cyan"
           />
           <button
             onClick={handleSubmit}

@@ -11,7 +11,7 @@ export default function PiecePreview({ type, label }: Props) {
   const piece = type ? createPiece(type) : null;
 
   return (
-    <div className="neon-border rounded-lg p-3 bg-gray-950/80">
+    <div className="neon-border rounded-lg p-3 theme-panel">
       <div className="text-[8px] sm:text-[10px] text-neon-cyan mb-2 neon-text text-center">
         {label}
       </div>
@@ -27,14 +27,14 @@ export default function PiecePreview({ type, label }: Props) {
                     width: "14px",
                     height: "14px",
                     backgroundColor: cell ? piece.color : "transparent",
-                    border: cell ? "1px solid rgba(255,255,255,0.15)" : "none",
+                    border: cell ? "1px solid var(--cell-filled-border)" : "none",
                   }}
                 />
               ))
             )}
           </div>
         ) : (
-          <div className="text-[8px] text-gray-600">EMPTY</div>
+          <div className="text-[8px] theme-text-muted">EMPTY</div>
         )}
       </div>
     </div>

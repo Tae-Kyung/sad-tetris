@@ -12,7 +12,7 @@ interface Props {
 export default function GameOverModal({ playerName, score, level, lines, onRestart, onClose }: Props) {
   return (
     <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-      <div className="neon-border rounded-xl bg-gray-950 p-6 max-w-sm w-full text-center space-y-4">
+      <div className="neon-border rounded-xl theme-panel p-6 max-w-sm w-full text-center space-y-4">
         <h2 className="text-xl text-neon-red neon-text">GAME OVER</h2>
         <p className="text-xs text-gray-400">{playerName}</p>
         <div className="space-y-1 text-xs">

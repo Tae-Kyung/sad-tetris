@@ -7,7 +7,7 @@ interface Props {
 export default function PauseModal({ onResume }: Props) {
   return (
     <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
-      <div className="neon-border rounded-xl bg-gray-950 p-8 text-center space-y-4">
+      <div className="neon-border rounded-xl theme-panel p-8 text-center space-y-4">
         <h2 className="text-xl text-neon-yellow neon-text animate-pulse-neon">PAUSED</h2>
         <p className="text-[10px] text-gray-400">Press ESC or P to resume</p>
         <button

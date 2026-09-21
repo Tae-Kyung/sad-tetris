@@ -8,7 +8,7 @@ interface Props {
 
 export default function GameInfo({ score, level, lines }: Props) {
   return (
-    <div className="neon-border rounded-lg p-3 bg-gray-950/80 space-y-3">
+    <div className="neon-border rounded-lg p-3 theme-panel space-y-3">
       <div>
         <div className="text-[8px] sm:text-[10px] text-neon-cyan neon-text">SCORE</div>
         <div className="text-sm sm:text-lg text-neon-yellow neon-text font-bold">

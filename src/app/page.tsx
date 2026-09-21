@@ -14,7 +14,7 @@ import Reviews from "@/components/Reviews";
 import AccessLogs from "@/components/AccessLogs";
 import { useCellSize } from "@/hooks/useCellSize";
 import { BOARD_WIDTH, BOARD_HEIGHT } from "@/lib/tetris";
-import { Gamepad2 } from "lucide-react";
+import { Gamepad2, Sun, Moon } from "lucide-react";
 
 export default function Home() {
   const game = useTetris();
@@ -23,6 +23,13 @@ export default function Home() {
   const [showGameOver, setShowGameOver] = useState(false);
   const [activeTab, setActiveTab] = useState<"leaderboard" | "reviews" | "logs">("leaderboard");
   const [prevGameState, setPrevGameState] = useState(game.gameState);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+
+  const toggleTheme = () => {
+    const next = theme === "dark" ? "light" : "dark";
+    setTheme(next);
+    document.documentElement.setAttribute("data-theme", next);
+  };
 
   useEffect(() => {
     logAccess();
@@ -47,10 +54,19 @@ export default function Home() {
 
   return (
     <main className="min-h-screen flex flex-col items-center py-4 px-2 sm:px-4">
-      {/* Title */}
-      <h1 className="text-xl sm:text-3xl text-neon-cyan neon-text mb-4 tracking-wider">
-        TETRIS
-      </h1>
+      {/* Title & Theme Toggle */}
+      <div className="flex items-center gap-4 mb-4">
+        <h1 className="text-xl sm:text-3xl text-neon-cyan neon-text tracking-wider">
+          TETRIS
+        </h1>
+        <button
+          onClick={toggleTheme}
+          className="p-2 rounded-lg neon-border theme-panel hover:opacity-80 transition"
+          title={theme === "dark" ? "Light mode" : "Dark mode"}
+        >
+          {theme === "dark" ? <Sun size={16} className="text-neon-yellow" /> : <Moon size={16} className="text-neon-blue" />}
+        </button>
+      </div>
 
       <div className="flex flex-col md:flex-row gap-4 items-start justify-center w-full max-w-5xl">
         {/* Left: Game area with sidebars */}
@@ -72,7 +88,7 @@ export default function Home() {
 
             {game.gameState === "idle" ? (
               <div
-                className="neon-border rounded-lg bg-gray-950/80 flex flex-col items-center justify-center gap-8"
+                className="neon-border rounded-lg theme-panel flex flex-col items-center justify-center gap-8"
                 style={{
                   width: `${cellSize * BOARD_WIDTH + BOARD_WIDTH + 10}px`,
                   height: `${cellSize * BOARD_HEIGHT + BOARD_HEIGHT + 10}px`,
@@ -95,7 +111,7 @@ export default function Home() {
                   value={playerName}
                   onChange={(e) => setPlayerName(e.target.value)}
                   maxLength={20}
-                  className="w-40 sm:w-48 bg-gray-900 border border-neon-cyan/30 rounded px-3 py-2 text-[10px] sm:text-xs text-center focus:outline-none focus:border-neon-cyan"
+                  className="w-40 sm:w-48 theme-input rounded px-3 py-2 text-[10px] sm:text-xs text-center focus:outline-none focus:border-neon-cyan"
                 />
                 <button
                   onClick={game.startGame}
@@ -143,8 +159,8 @@ export default function Home() {
               onClick={() => setActiveTab("leaderboard")}
               className={`flex-1 text-[9px] py-1.5 rounded-t border transition ${
                 activeTab === "leaderboard"
-                  ? "border-neon-cyan text-neon-cyan bg-gray-950"
-                  : "border-gray-700 text-gray-500 bg-gray-900"
+                  ? "border-neon-cyan text-neon-cyan theme-panel"
+                  : "tab-inactive-border theme-text-muted tab-inactive-bg"
               }`}
             >
               RANKING
@@ -153,8 +169,8 @@ export default function Home() {
               onClick={() => setActiveTab("reviews")}
               className={`flex-1 text-[9px] py-1.5 rounded-t border transition ${
                 activeTab === "reviews"
-                  ? "border-neon-cyan text-neon-cyan bg-gray-950"
-                  : "border-gray-700 text-gray-500 bg-gray-900"
+                  ? "border-neon-cyan text-neon-cyan theme-panel"
+                  : "tab-inactive-border theme-text-muted tab-inactive-bg"
               }`}
             >
               REVIEWS
@@ -163,8 +179,8 @@ export default function Home() {
               onClick={() => setActiveTab("logs")}
               className={`flex-1 text-[9px] py-1.5 rounded-t border transition ${
                 activeTab === "logs"
-                  ? "border-neon-cyan text-neon-cyan bg-gray-950"
-                  : "border-gray-700 text-gray-500 bg-gray-900"
+                  ? "border-neon-cyan text-neon-cyan theme-panel"
+                  : "tab-inactive-border theme-text-muted tab-inactive-bg"
               }`}
             >
               LOGS
