@@ -46,20 +46,27 @@ export default function Home() {
             </div>
 
             {game.gameState === "idle" ? (
-              <div className="neon-border rounded-lg p-8 bg-gray-950/80 flex flex-col items-center gap-6">
-                <Gamepad2 size={48} className="text-neon-cyan animate-pulse-neon" />
+              <div
+                className="neon-border rounded-lg bg-gray-950/80 flex flex-col items-center justify-center gap-8"
+                style={{
+                  width: "clamp(180px, 37vw, 300px)",
+                  height: "clamp(360px, 74vw, 600px)",
+                }}
+              >
+                <Gamepad2 size={64} className="text-neon-cyan animate-pulse-neon" />
+                <h2 className="text-lg sm:text-2xl text-neon-cyan neon-text">TETRIS</h2>
                 <div className="text-center space-y-2">
-                  <p className="text-xs text-gray-400">Controls:</p>
-                  <div className="text-[8px] text-gray-500 space-y-1">
+                  <p className="text-[10px] sm:text-xs text-gray-400">Controls:</p>
+                  <div className="text-[8px] sm:text-[10px] text-gray-500 space-y-1.5">
                     <p>Arrow Keys - Move & Rotate</p>
                     <p>Space - Hard Drop</p>
-                    <p>C/Shift - Hold</p>
-                    <p>ESC/P - Pause</p>
+                    <p>C / Shift - Hold</p>
+                    <p>ESC / P - Pause</p>
                   </div>
                 </div>
                 <button
                   onClick={game.startGame}
-                  className="bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-lg px-8 py-3 text-sm hover:bg-neon-cyan/30 transition neon-text"
+                  className="bg-neon-cyan/20 border-2 border-neon-cyan text-neon-cyan rounded-lg px-10 py-4 text-sm sm:text-base hover:bg-neon-cyan/30 transition neon-text"
                 >
                   START GAME
                 </button>
