@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTetris } from "@/hooks/useTetris";
+import { logAccess } from "@/lib/supabase";
 import TetrisBoard from "@/components/TetrisBoard";
 import PiecePreview from "@/components/PiecePreview";
 import GameInfo from "@/components/GameInfo";
@@ -16,6 +17,10 @@ export default function Home() {
   const game = useTetris();
   const [showGameOver, setShowGameOver] = useState(false);
   const [activeTab, setActiveTab] = useState<"leaderboard" | "reviews">("leaderboard");
+
+  useEffect(() => {
+    logAccess();
+  }, []);
 
   const isGameOver = game.gameState === "gameover";
   const showGameOverModal = isGameOver && !showGameOver;

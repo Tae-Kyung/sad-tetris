@@ -20,6 +20,18 @@ CREATE TABLE tetris_reviews (
   created_at TIMESTAMPTZ DEFAULT now()
 );
 
+-- tetris_access_logs: 접속 로그
+CREATE TABLE tetris_access_logs (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  ip_address TEXT,
+  user_agent TEXT,
+  language TEXT,
+  screen_width INTEGER,
+  screen_height INTEGER,
+  referrer TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+
 -- 리더보드 조회 성능을 위한 인덱스
 CREATE INDEX idx_tetris_records_score ON tetris_records(score DESC);
 CREATE INDEX idx_tetris_reviews_created ON tetris_reviews(created_at DESC);
@@ -33,3 +45,7 @@ CREATE POLICY "Allow public insert tetris_records" ON tetris_records FOR INSERT 
 
 CREATE POLICY "Allow public read tetris_reviews" ON tetris_reviews FOR SELECT USING (true);
 CREATE POLICY "Allow public insert tetris_reviews" ON tetris_reviews FOR INSERT WITH CHECK (true);
+
+ALTER TABLE tetris_access_logs ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Allow public insert tetris_access_logs" ON tetris_access_logs FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public read tetris_access_logs" ON tetris_access_logs FOR SELECT USING (true);

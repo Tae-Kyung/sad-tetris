@@ -62,6 +62,22 @@ export async function getReviews(limit = 20): Promise<GameReview[]> {
   return data || [];
 }
 
+export async function logAccess() {
+  try {
+    await fetch("/api/log-access", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user_agent: navigator.userAgent,
+        language: navigator.language,
+        screen_width: window.screen.width,
+        screen_height: window.screen.height,
+        referrer: document.referrer || null,
+      }),
+    });
+  } catch {}
+}
+
 export async function getAverageRating(): Promise<number> {
   if (!supabase) return 0;
   const { data, error } = await supabase.from("tetris_reviews").select("rating");
