@@ -166,7 +166,7 @@ export default function Home() {
               LOGS
             </button>
           </div>
-          {activeTab === "leaderboard" ? <Leaderboard /> : activeTab === "reviews" ? <Reviews /> : <AccessLogs />}
+          {activeTab === "leaderboard" ? <Leaderboard /> : activeTab === "reviews" ? <Reviews playerName={playerName} /> : <AccessLogs />}
         </div>
       </div>
 

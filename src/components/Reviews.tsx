@@ -27,10 +27,9 @@ function Stars({ rating, onRate }: { rating: number; onRate?: (n: number) => voi
   );
 }
 
-export default function Reviews() {
+export default function Reviews({ playerName }: { playerName: string }) {
   const [reviews, setReviews] = useState<GameReview[]>([]);
   const [avg, setAvg] = useState(0);
-  const [name, setName] = useState("");
   const [comment, setComment] = useState("");
   const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -54,15 +53,14 @@ export default function Reviews() {
   }, []);
 
   const handleSubmit = async () => {
-    if (!name.trim() || !rating || submitting) return;
+    if (!playerName.trim() || !rating || submitting) return;
     setSubmitting(true);
     try {
       await saveReview({
-        author_name: name.trim(),
+        author_name: playerName.trim(),
         rating,
         comment: comment.trim(),
       });
-      setName("");
       setComment("");
       setRating(0);
       fetchData();
@@ -107,14 +105,6 @@ export default function Reviews() {
       {/* Submit form */}
       <div className="space-y-2 mb-4 pb-3 border-b border-gray-800">
         <Stars rating={rating} onRate={setRating} />
-        <input
-          type="text"
-          placeholder="Your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          maxLength={20}
-          className="w-full bg-gray-900 border border-gray-700 rounded px-2 py-1.5 text-[9px] focus:outline-none focus:border-neon-cyan"
-        />
         <div className="flex gap-1">
           <input
             type="text"
@@ -126,7 +116,7 @@ export default function Reviews() {
           />
           <button
             onClick={handleSubmit}
-            disabled={!name.trim() || !rating || submitting}
+            disabled={!playerName.trim() || !rating || submitting}
             className="bg-neon-cyan/20 border border-neon-cyan text-neon-cyan rounded px-2 hover:bg-neon-cyan/30 disabled:opacity-40 transition"
           >
             <Send size={10} />
